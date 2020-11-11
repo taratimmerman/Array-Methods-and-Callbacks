@@ -47,7 +47,10 @@ Implement a higher-order function called `getWinners`, that accepts the callback
 
 function getWinners(data, getFinalsCB) {
     let winners = getFinalsCB(data).map(function(item) {
-        return item['Win conditions'][0];
+        if (item['Home Team Goals'] > item['Away Team Goals']) {
+            return item['Home Team Name'];
+        } 
+        return item['Away Team Name'];
     });
     return winners;
 }
@@ -63,15 +66,26 @@ Parameters:
  * callback function getYears
  */
 
-function getWinnersByYear(/* code here */) {
-    /* code here */
+function getWinnersByYear(data, getYearsCB, getWinnersCB) {
+    let years = getYearsCB(data, getFinals);
+    let winners = getWinnersCB(data, getFinals);
+    return years.map(function(year, index) {
+        return `In ${year}, ${winners[index]} won the world cup!`
+    });
 }
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 6: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
 Write a function called `getAverageGoals` that accepts a parameter `data` and returns the the average number of home team goals and away team goals scored per match (Hint: use .reduce and do this in 2 steps) */
 
-function getAverageGoals(/* code here */) {
-   /* code here */
+function getAverageGoals(data) {
+   let homeGoals = data.map(function(item) {
+       return item['Home Team Goals'];
+   })
+   let awayGoals = data.map(function(item) {
+       return item['Away Team Goals'];
+   })
+   let score = homeGoals.reduce((accumulator, value) => accumulator + value) + awayGoals.reduce((accumulator, value) => accumulator + value)
+   return `${(score / data.length).toFixed(2)}`
 }
 
 
